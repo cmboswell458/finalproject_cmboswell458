@@ -1,9 +1,9 @@
 <?php
-// Show errors (helpful during testing)
+// Show errors (for development)
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// Database connection
+// --- Connect to database ---
 $host = "localhost";
 $username = "root";
 $password = "mysql";
@@ -16,22 +16,23 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Get form input safely
+// --- Get form input safely ---
 $lastName = $_POST['last_name'] ?? '';
 
-// Prepare stored procedure
+// --- Prepare stored procedure call ---
 $stmt = $conn->prepare("CALL search_students(?)");
 
 if (!$stmt) {
     die("Prepare failed: " . $conn->error);
 }
 
+// Bind parameter and execute
 $stmt->bind_param("s", $lastName);
 $stmt->execute();
 
+// --- Execute and fetch results ---
 $result = $stmt->get_result();
 
-// Store results
 $students = [];
 
 if ($result && $result->num_rows > 0) {
@@ -40,7 +41,7 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-// Fix for stored procedure multi-result issue
+// Handle stored procedure multiple result sets
 while ($conn->more_results() && $conn->next_result()) {;}
 
 $stmt->close();
@@ -57,6 +58,8 @@ $conn->close();
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
+
+<div class="container">
 
     <h1>Search Results</h1>
 
@@ -81,9 +84,10 @@ $conn->close();
                     <td><?php echo htmlspecialchars($student['email']); ?></td>
                 </tr>
             <?php endforeach; ?>
-
         </table>
     <?php endif; ?>
+
+</div>
 
 </body>
 </html>

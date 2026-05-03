@@ -1,9 +1,16 @@
 /* General page styling */
 body {
     font-family: Arial, Helvetica, sans-serif;
-    margin: 40px;
+    margin: 0;
     background-color: #f9f9f9;
     color: #333;
+}
+
+/* Centered layout container */
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
 }
 
 /* Headings */
@@ -20,11 +27,10 @@ p {
 /* Form styling */
 form {
     margin-top: 20px;
-    padding: 15px;
+    padding: 20px;
     background-color: #ffffff;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 300px;
 }
 
 input[type="text"] {
@@ -52,7 +58,7 @@ button:hover {
 /* Table styling */
 table {
     border-collapse: collapse;
-    width: 70%;
+    width: 100%;
     margin-top: 20px;
     background-color: #ffffff;
 }
