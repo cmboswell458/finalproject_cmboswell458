@@ -25,7 +25,10 @@ The application demonstrates full stack development concepts including frontend 
 - CSS3
 - JavaScript
 
+---
+
 ## 📂 Project Structure
+```
 finalproject_cmboswell458/
 │
 ├── index.php
@@ -33,24 +36,27 @@ finalproject_cmboswell458/
 ├── README.md
 │
 ├── styles/
-│ └── main.css
+│   └── main.css
 │
 ├── scripts/
-│ └── main.js
+│   └── main.js
 │
 ├── media/
-│ ├── homepage.png
-│ ├── search-results.png
-│ └── no-results.png
+│   ├── homepage.png
+│   ├── search-results.png
+│   └── no-results.png
+```
 
 ---
 
 ## 🗄️ Database Setup
 
-1. Create a database named:
+### Create Database
+```
 student_directory
+```
 
-2. Create the `students` table:
+### Create Table
 ```sql
 CREATE TABLE students (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -58,14 +64,20 @@ CREATE TABLE students (
     last_name VARCHAR(50),
     email VARCHAR(100)
 );
-3. Insert sample data:
+```
+
+### Insert Sample Data
+```sql
 INSERT INTO students (first_name, last_name, email) VALUES
 ('John', 'Smith', 'john.smith@email.com'),
 ('Sarah', 'Johnson', 'sarah.johnson@email.com'),
 ('Michael', 'Smithson', 'michael.smithson@email.com'),
 ('Emily', 'Davis', 'emily.davis@email.com'),
 ('David', 'Smith', 'david.smith@email.com');
-4. Create stored procedure:
+```
+
+### Create Stored Procedure
+```sql
 DELIMITER $$
 
 CREATE PROCEDURE search_students(IN lName VARCHAR(50))
@@ -75,23 +87,38 @@ BEGIN
 END $$
 
 DELIMITER ;
-▶️ How to Run the Project
-1. Place the project folder inside your AMPPS www directory
-2. Start Apache and MySQL in AMPPS
-3. Open your browser and go to:
+```
+
+---
+
+## ▶️ How to Run the Project
+1. Place the project folder inside your AMPPS `www` directory  
+2. Start Apache and MySQL in AMPPS  
+3. Open your browser and go to:  
+```
 http://localhost/finalproject_cmboswell458/index.php
-4. Enter a last name and click Search
-🖼️ Screenshots
-Homepage
+```
+4. Enter a last name and click **Search**
 
-Search Results
+---
 
-No Results Found
+## 🖼️ Screenshots
 
-👤 Author
+### Homepage
+![Homepage](media/homepage.png)
 
+### Search Results
+![Search Results](media/search-results.png)
+
+### No Results Found
+![No Results](media/no-results.png)
+
+---
+
+## 👤 Author
 Crystal Michelle Boswell
 
-📅 Date
+---
 
+## 📅 Date
 May 2026
