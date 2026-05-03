@@ -1,51 +1,20 @@
 <?php
-// Show errors (for development)
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+// Get search query
+$query = isset($_GET['query']) ? trim($_GET['query']) : "";
 
-// --- Connect to database ---
-$host = "localhost";
-$username = "root";
-$password = "mysql";
-$database = "student_directory";
+// Sample dataset (replace with your real data if needed)
+$data = ["luggage", "bag", "suitcase", "travel kit"];
 
-$conn = new mysqli($host, $username, $password, $database);
+// Search logic
+$results = [];
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// --- Get form input safely ---
-$lastName = $_POST['last_name'] ?? '';
-
-// --- Prepare stored procedure call ---
-$stmt = $conn->prepare("CALL search_students(?)");
-
-if (!$stmt) {
-    die("Prepare failed: " . $conn->error);
-}
-
-// Bind parameter and execute
-$stmt->bind_param("s", $lastName);
-$stmt->execute();
-
-// --- Execute and fetch results ---
-$result = $stmt->get_result();
-
-$students = [];
-
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $students[] = $row;
+if ($query !== "") {
+    foreach ($data as $item) {
+        if (stripos($item, $query) !== false) {
+            $results[] = $item;
+        }
     }
 }
-
-// Handle stored procedure multiple result sets
-while ($conn->more_results() && $conn->next_result()) {;}
-
-$stmt->close();
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -53,41 +22,43 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Search Results</title>
-
-    <!-- External CSS -->
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
 
-<div class="container">
-
     <h1>Search Results</h1>
 
-    <a href="index.php">← Back to Home</a>
+    <!-- 🔍 SEARCH FORM -->
+    <form action="search.php" method="GET">
+        <input type="text" name="query" placeholder="Search..." value="<?php echo htmlspecialchars($query); ?>">
+        <button type="submit">Search</button>
+    </form>
 
-    <?php if (empty($students)): ?>
-        <p>No students found.</p>
-    <?php else: ?>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-            </tr>
+    <hr>
 
-            <?php foreach ($students as $student): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($student['id']); ?></td>
-                    <td><?php echo htmlspecialchars($student['first_name']); ?></td>
-                    <td><?php echo htmlspecialchars($student['last_name']); ?></td>
-                    <td><?php echo htmlspecialchars($student['email']); ?></td>
-                </tr>
+    <!-- ✅ RESULTS DISPLAY -->
+    <?php if (!empty($results)): ?>
+        <ul>
+            <?php foreach ($results as $result): ?>
+                <li><?php echo htmlspecialchars($result); ?></li>
             <?php endforeach; ?>
-        </table>
+        </ul>
+    <?php else: ?>
+        
+        <!-- 🚨 NO RESULTS POPUP -->
+        <div id="noResultsPopup">
+            No results found. Please try again.
+        </div>
+
     <?php endif; ?>
 
-</div>
+    <br>
+
+    <!-- ✅ FIXED HOME BUTTON (NO DELAY) -->
+    <button type="button" id="homeBtn">Go Back Home</button>
+
+    <!-- JS FILE -->
+    <script src="scripts/main.js"></script>
 
 </body>
 </html>
